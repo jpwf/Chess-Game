@@ -3,3 +3,8 @@
   padding: 0;
   box-sizing: border-box;
 }
+#mesa{
+  width: 320px;
+  height: 320px;
+  background-color:black;
+}
