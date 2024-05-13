@@ -5,18 +5,22 @@ const infoDisplay = document.querySelector("#info-display")
 const width = 8;
 
 const S_pieces = [
-  rook, knight, bishop, queen, king, bishop, knight, rook,
-  pawn, pawn, pawn, pawn, pawn, pawn, pawn, pawn,
+  Torre, Cavalo, Bispo, Rainha, Rei, Bispo, Cavalo, Torre,
+  Peao, Peao, Peao, Peao, Peao, Peao, Peao, Peao,
   "","","","","","","","",
   "","","","","","","","",
   "","","","","","","","",
-  pawn, pawn, pawn, pawn, pawn, pawn, pawn, pawn,
-  rook, knight, bishop, queen, king, bishop, knight, rook
+  Peao, Peao, Peao, Peao, Peao, Peao, Peao, Peao,
+  Torre, Cavalo, Bispo, Rainha, Rei, Bispo, Cavalo, Torre
 ]
 
 function createBoard(){
-  S_pieces.forEach((s_piece)=>{
+  S_pieces.forEach((s_piece, i)=>{
     const square = document.createElement('div')
     square.classList.add('square')
+    square.setAttribute('square-id', i)
+    square.classList.add('bege')
+    mesa.append(square)
   })
 }
+createBoard()

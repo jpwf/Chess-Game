@@ -6,5 +6,18 @@
 #mesa{
   width: 320px;
   height: 320px;
-  background-color:black;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.square {
+  height: 40px;
+  width: 40px;
+}
+.bege{
+  background-color: rgb(110,110,98);
+}
+
+.marrom{
+  background-color: rgb(169, 43, 43);
 }
