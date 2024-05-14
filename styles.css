@@ -1,8 +1,4 @@
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 #mesa{
   width: 320px;
   height: 320px;
@@ -13,11 +9,21 @@
 .square {
   height: 40px;
   width: 40px;
+  position: relative;
 }
 .square svg{
   height: 30px;
-  width: 40px;
+  width: 30px;
   margin: 5px;
+  position: relative;
+  z-index: -10;
+}
+path{
+  position: relative;
+}
+.piece{
+  position: relative;
+  z-index: 9
 }
 .bege{
   background-color: rgb(110,110,98);
@@ -25,4 +31,10 @@
 
 .marrom{
   background-color: rgb(169, 43, 43);
+}
+.black{
+  fill: rgb(28,28,28);
+}
+.white{
+  fill:rgb(255, 255, 255);
 }
