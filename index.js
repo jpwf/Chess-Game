@@ -10,8 +10,10 @@ const bishop = '<div class="piece" id="bishop"><svg xmlns=\"http://www.w3.org/20
 const mesa = document.querySelector("#mesa")
 const jogador = document.querySelector("#jogador")
 const infoDisplay = document.querySelector("#info-display")
-const allsquares = document.querySelectorAll("#mesa .square")
+
 const width = 8;
+let playerPosition = 'black'
+jogador.textContent = 'black'
 
 const startPieces = [
   rook, knight, bishop, queen, king, bishop, knight, rook,
@@ -29,9 +31,7 @@ function createBoard(){
     const square = document.createElement('div')
     square.classList.add('square')
     square.innerHTML = s_piece
-    if(square.firstChild == true){
-      square.firstChild.setAttribute('draggable', true)
-    }
+    square.firstChild ?.setAttribute('draggable', true)
     square.setAttribute('square-id', i)
     const row = Math.floor((63 - i)  / 8) + 1
     if(row % 2 === 0){
@@ -50,31 +50,131 @@ function createBoard(){
     
     mesa.append(square)
   })
-  //18:50
+  
 }
 createBoard()
 
+const allsquares = document.querySelectorAll(".square")
+
 allsquares.forEach(square => {
-  square.addEventListener('dragstart', dragstart)
-  square.addEventListener('dragover', dragover)
+  square.addEventListener('dragstart', dragStart)
+  square.addEventListener('dragover', dragOver)
   square.addEventListener('drop', dragDrop)
 })
 let IpositionId 
 let draggedElement
-function dragstart(e){
+function dragStart(e){
+  
   IpositionId = e.target.parentNode.getAttribute('square-id')
   draggedElement = e.target
 }
-function dragover(e){
+function dragOver(e){
   e.preventDefault()
+  //console.log(e.target)
 }
 function dragDrop(e){
   e.stopPropagation();
-  e.target.append(draggedElement)
+ 
+ 
+  //e.target.append(draggedElement)
   const taken = e.target.classList.contains('piece')
-  if(taken = true){
-    e.target.parentNode.append(draggedElement)
-    e.target.remove()
+  const valido = checkValido(e.target)
+  const positionCorrect = draggedElement.firstChild.classList.contains(playerPosition)
+  
+  const oponentPosition = playerPosition === 'white' ? 'black' : 'white'
+  
+  const takenOponente = e.target.firstChild?.classList.contains(oponentPosition)
+  
+  if(positionCorrect){
+    if(takenOponente && valido){
+      e.target.parentNode.append(draggedElement)
+      e.target.remove()
+      Jogadorchange()
+      return
+    }
+    if(taken && !takenOponente){
+      setTimeout(() => alert("Não pode jogar aqui"), 500)
+
+      return
+    }
+    if(valido){
+      e.target.append(draggedElement)
+      Jogadorchange()
+      return
+    }
   }
+ 
+    Jogadorchange()
+  
   
 }
+
+function Jogadorchange(){
+  if(playerPosition === 'black'){
+    playerPosition = 'white'
+    jogador.textContent = 'white'
+    IdsInverte()
+  }
+  else{
+    IdsInvertido()
+    playerPosition = 'black'
+    jogador.textContent = 'black'
+  }
+}
+
+function IdsInverte(){
+  const squares = document.querySelectorAll(' .square')
+  squares.forEach((square, i) => square.setAttribute('square-id', (width * width - 1) - i))
+
+}
+
+function IdsInvertido(){
+  const squares = document.querySelectorAll(' .square')
+  squares.forEach((square, i) => square.setAttribute('square-id', i))
+}
+function checkValido(target){
+ 
+  const IDalvo = Number(target.getAttribute('square-id')) || Number(target.parentNode.getAttribute('square-id'))
+  const idStart = Number(IpositionId)
+  const piece = draggedElement.id
+  console.log('ID do alvo', IDalvo)
+  console.log('ID inicial', idStart)
+  console.log('Peça', piece )
+
+  switch(piece){
+    case 'pawn': 
+      let linhaInicial = [8,9,10,11,12,13,14,15]
+      if(linhaInicial.includes(idStart) && idStart + width * 2 === IDalvo ||
+      idStart + width === IDalvo || 
+      idStart + width - 1 === IDalvo || document.querySelector(`[square-id == "${idStart + width - 1}"]`).firstChild||
+      idStart + width + 1 === IDalvo || document.querySelector(`[square-id == "${idStart + width + 1}"]`).firstChild){
+        
+       return true   
+      }
+      break;
+    case 'knight': 
+      if(idStart + width * 2 - 1 === IDalvo ||
+        idStart + width * 2 + 1 === IDalvo ||
+        idStart + width -  2  === IDalvo ||
+        idStart + width + 2  === IDalvo ||
+        idStart - width * 2 - 1 === IDalvo ||
+        idStart - width * 2 + 1 === IDalvo ||
+        idStart - width -  2  === IDalvo ||
+        idStart - width + 2 === IDalvo){
+          return true
+        }
+        break;
+      case 'bishop':
+        if(idStart + width + 1 === IDalvo ||
+          idStart + width * 2 + 2 && !document.querySelector(`[square-id = "${idStart + width + 1}"]`).firstChild||
+          idStart + width * 3 + 3 && !document.querySelector(`[square-id = "${idStart + width *  1}"]`).firstChild && !document.querySelector(`[square-id = "${idStart + width * 2 + 2}"]`).firstChild||
+          idStart + width * 4 + 4||
+          idStart + width * 5 + 5||
+          idStart + width * 6 + 6||
+          idStart + width * 7 + 7
+          ){
+
+          }
+      }}
+
+      //1:08:53
